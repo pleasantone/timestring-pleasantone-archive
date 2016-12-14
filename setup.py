@@ -3,7 +3,7 @@ from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(here, "README.md"), encoding="utf-8") as stream:
+with open(os.path.join(here, "README.rst"), encoding="utf-8") as stream:
     long_description = stream.read()
 
 with open(os.path.join(here, "timestring/version.py")) as stream:

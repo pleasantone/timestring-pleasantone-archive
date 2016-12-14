@@ -3,9 +3,6 @@ import sys
 import argparse
 from datetime import datetime
 
-__version__ = VERSION = version = '1.6.2.2'
-
-
 class TimestringInvalid(Exception):
     def __init__(self, reason):
         self.reason = reason
@@ -13,7 +10,7 @@ class TimestringInvalid(Exception):
     def __str__(self):
         return self.reason
 
-
+from .version import __version__, VERSION, version
 from .Date import Date
 from .Range import Range
 from .timestring_re import TIMESTRING_RE

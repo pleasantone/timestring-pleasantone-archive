@@ -1,12 +1,13 @@
 import os
-import sys
-from setuptools import setup, find_packages
-
-from timestring import __version__
+from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
-    long_description = f.read()
+
+with open(os.path.join(here, "README.md"), encoding="utf-8") as stream:
+    long_description = stream.read()
+
+with open(os.path.join(here, "timestring/version.py")) as stream:
+    exec(stream.read())
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -31,7 +32,7 @@ setup(
     author_email="steve@stevepeak.net, bulk+github@pst.org",
     url="http://github.com/pleasantone/timestring",
     license="http://www.apache.org/licenses/LICENSE-2.0",
-    packages=find_packages(exclude=["examples", "tests"]),
+    packages=["timestring"],
     include_package_data=True,
     zip_safe=True,
     entry_points={

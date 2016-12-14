@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup
+from timestring import version
 
-version = '1.6.2.2'
 classifiers = ["Development Status :: 5 - Production/Stable",
                "License :: OSI Approved :: Apache Software License",
                "Programming Language :: Python",

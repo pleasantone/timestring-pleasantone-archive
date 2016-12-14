@@ -32,9 +32,13 @@ class Date(object):
 
         elif date == 'now':
             self.date = datetime.now()
+            if tz:
+                self.date = tz.localize(self.date)
 
         elif type(date) in (str, unicode) and re.match(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+-\d{2}", date):
             self.date = datetime.strptime(date[:-3], "%Y-%m-%d %H:%M:%S.%f") - timedelta(hours=int(date[-3:]))
+            if tz:
+                self.date = tz.localize(self.date)
 
         else:
             # Determinal starting date.
@@ -55,20 +59,7 @@ class Date(object):
 
             if isinstance(date, dict):
                 # Initial date.
-                new_date = datetime(*time.localtime()[:3])
-                if tz and tz.zone != "UTC":
-                    #
-                    # The purpose here is to adjust what day it is based on the timezeone
-                    #
-                    ts = datetime.now()
-                    # Daylight savings === second Sunday in March and reverts to standard time on the first Sunday in November
-                    # Monday is 0 and Sunday is 6.
-                    # 14 days - dst_start.weekday()
-                    dst_start = datetime(ts.year, 3, 1, 2, 0, 0) + timedelta(13 - datetime(ts.year, 3, 1).weekday())
-                    dst_end = datetime(ts.year, 11, 1, 2, 0, 0) + timedelta(6 - datetime(ts.year, 11, 1).weekday())
-
-                    ts = ts + tz.utcoffset(new_date, is_dst=(dst_start < ts < dst_end))
-                    new_date = datetime(ts.year, ts.month, ts.day)
+                new_date = datetime.now(tz=tz).replace(hour=0, minute=0, second=0, microsecond=0)
 
                 if date.get('unixtime'):
                     new_date = datetime.fromtimestamp(int(date.get('unixtime')))
@@ -207,8 +198,8 @@ class Date(object):
                 # Set to the current date Y, M, D, H0, M0, S0
                 self.date = datetime(*time.localtime()[:3])
 
-            if tz:
-                self.date = self.date.replace(tzinfo=tz)
+            if tz and self.date.tzinfo is None:
+                self.date = tz.localize(self.date)
 
             # end if type(date) is types.DictType: and self.date.hour == 0:
             if offset and isinstance(offset, dict):
@@ -287,7 +278,8 @@ class Date(object):
             if tz is None:
                 self.date = self.date.replace(tzinfo=None)
             else:
-                self.date = self.date.replace(tzinfo=pytz.timezone(tz))
+                tzinfo = pytz.timezone(tz)
+                self.date = tzinfo.localize(self.date)
 
     def replace(self, **k):
         """Note returns a new Date obj"""
@@ -385,9 +377,9 @@ class Date(object):
                 if other.date == 'infinity':
                     return False
                 elif other.tz and self.tz is None:
-                    return self.date.replace(tzinfo=other.tz) > other.date
+                    return other.tz.localize(self.date) > other.date
                 elif self.tz and other.tz is None:
-                    return self.date > other.date.replace(tzinfo=self.tz)
+                    return self.date > self.tz.localize(other.date)
                 return self.date > other.date
             else:
                 from .Range import Range
@@ -395,9 +387,9 @@ class Date(object):
                     if other.end.date == 'infinity':
                         return False
                     if other.end.tz and self.tz is None:
-                        return self.date.replace(tzinfo=other.end.tz) > other.end.date
+                        return other.end.tz.localize(self.date) > other.end.date
                     elif self.tz and other.end.tz is None:
-                        return self.date > other.end.date.replace(tzinfo=self.tz)
+                        return self.date > self.tz.localize(other.end.date)
                     return self.date > other.end.date
                 else:
                     return self.__gt__(Date(other, tz=self.tz))
@@ -411,17 +403,17 @@ class Date(object):
             if other.date == 'infinity':
                 return True
             elif other.tz and self.tz is None:
-                return self.date.replace(tzinfo=other.tz) < other.date
+                return other.tz.localize(self.date) < other.date
             elif self.tz and other.tz is None:
-                return self.date < other.date.replace(tzinfo=self.tz)
+                return self.date < self.tz.localize(other.date)
             return self.date < other.date
         else:
             from .Range import Range
             if isinstance(other, Range):
                 if other.end.tz and self.tz is None:
-                    return self.date.replace(tzinfo=other.end.tz) < other.end.date
+                    return other.end.tz.localize(self.date) < other.end.date
                 elif self.tz and other.end.tz is None:
-                    return self.date < other.end.date.replace(tzinfo=self.tz)
+                    return self.date < self.tz.localize(other.end.date)
                 return self.date < other.end.date
             else:
                 return self.__lt__(Date(other, tz=self.tz))
@@ -440,10 +432,10 @@ class Date(object):
                 return self.date == 'infinity'
 
             elif other.tz and self.tz is None:
-                return self.date.replace(tzinfo=other.tz) == other.date
+                return other.tz.localize(self.date) == other.date
 
             elif self.tz and other.tz is None:
-                return self.date == other.date.replace(tzinfo=self.tz)
+                return self.date == self.tz.localize(other.date)
 
             return self.date == other.date
         else:

@@ -50,7 +50,7 @@ class Range(object):
             """postgresql tsrange and tstzranges support
             """
             start, end = tuple(re.sub('[^\w\s\-\:\.\+\,]', '', start).split(','))
-            self._dates = (Date(start), Date(end))
+            self._dates = (Date(start, tz=tz), Date(end, tz=tz))
 
         else:
             now = datetime.now()
@@ -61,8 +61,8 @@ class Range(object):
                 pgoffset = re.search(r"(\+|\-)\d{2}$", start).group() + " hours"
 
             # tz info provided
-            if tz:
-                now = now.replace(tzinfo=pytz.timezone(str(tz)))
+            if not pgoffset and tz:
+                now = pytz.timezone(str(tz)).localize(now)
 
             # Parse
             res = TIMESTRING_RE.search(start)
@@ -181,7 +181,7 @@ class Range(object):
         # Ranges are natuarally always true in statments link: if Range
         return True
 
-    def format(self, format_string='%x %X'):
+    def format(self, format_string='%x %X%z'):
         return "From %s to %s" % (self[0].format(format_string) if isinstance(self[0], Date) else str(self[0]),
                                   self[1].format(format_string) if isinstance(self[1], Date) else str(self[1]))
 

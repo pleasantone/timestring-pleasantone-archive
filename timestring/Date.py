@@ -322,8 +322,8 @@ class Date(object):
                             new.date = new.date + timedelta(days=(365 * i))
                     elif delta.startswith('month'):
                         if (new.date.month + i) > 12:
-                            new.date = new.date.replace(month=(i - (i / 12)),
-                                                        year=(new.date.year + 1 + (i / 12)))
+                            new.date = new.date.replace(month=(i - (i // 12)),
+                                                        year=(new.date.year + 1 + (i // 12)))
                         elif (new.date.month + i) < 1:
                             new.date = new.date.replace(month=12, year=(new.date.year - 1))
                         else:

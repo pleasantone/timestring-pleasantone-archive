@@ -1,4 +1,4 @@
-# timestring [![Build Status](https://secure.travis-ci.org/stevepeak/timestring.png)](http://travis-ci.org/stevepeak/timestring) [![Version](https://pypip.in/v/timestring/badge.png)](https://github.com/stevepeak/timestring) [![codecov.io](https://codecov.io/github/stevepeak/timestring/coverage.svg?branch=master)](https://codecov.io/github/stevepeak/timestring)
+# timestring [![Build Status](https://secure.travis-ci.org/pleasantone/timestring.png)](http://travis-ci.org/pleasantone/timestring) [![Version](https://pypip.in/v/timestring-pleasantone/badge.png)](https://github.com/pleasantone/timestring) [![codecov.io](https://codecov.io/github/pleasantone/timestring/coverage.svg?branch=master)](https://codecov.io/github/pleasantone/timestring)
 
 Converting strings into usable time objects. The time objects, known as `Date` and `Range` have a number of methods that allow 
 you to easily change and manage your users input dynamically.
@@ -49,7 +49,7 @@ From 01/01/11 00:00:00 to 01/01/12 00:00:00
 
 *Note* you add more years like this `5 years ago` which will be `From 01/01/07 00:00:00 to 01/01/08 00:00:00`
 
-### See examples see the [test file](https://github.com/stevepeak/timestring/blob/master/tests/tests.py)
+### See examples see the [test file](https://github.com/pleasantone/timestring/blob/master/tests/tests.py)
 
 More examples / documentation coming soon.
 

@@ -455,7 +455,7 @@ class Date(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
-        
+
     def format(self, format_string='%x %X'):
         if self.date != 'infinity':
             return self.date.strftime(format_string)

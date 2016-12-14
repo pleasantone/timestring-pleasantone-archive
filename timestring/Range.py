@@ -127,7 +127,7 @@ class Range(object):
                         # need to include today with this reference
                         if not (delta.startswith('h') or delta.startswith('m') or delta.startswith('s')):
                             start = Range('today', offset=offset, tz=tz).end
-                        end = start - di                    
+                        end = start - di
 
                 elif group.get('month_1'):
                     # a single month of this yeear
@@ -157,7 +157,7 @@ class Range(object):
             if start > end:
                 # flip them if this is so
                 start, end = copy(end), copy(start)
-            
+
             if pgoffset:
                 start = start - pgoffset
                 if end != 'infinity':
@@ -276,7 +276,7 @@ class Range(object):
             end = self.end.replace(tzinfo=other.end.tz) if other.end.tz and self.end.tz is None else self.end
 
             if start == other.start and end == other.end:
-                return 0 
+                return 0
             elif start < other.start:
                 return -1
             else:
@@ -295,11 +295,11 @@ class Range(object):
             * [---{-}---] => True else False
         """
         if isinstance(other, Date):
-            
+
             # ~ .... |
             if self.start == 'infinity' and self.end >= other:
                 return True
-            
+
             # | .... ~
             elif self.end == 'infinity' and self.start <= other:
                 return True

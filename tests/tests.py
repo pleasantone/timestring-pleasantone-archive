@@ -80,14 +80,14 @@ class timestringTests(unittest.TestCase):
 
         _range = Range('tomorrow 10am to 5pm')
         tomorrow = now + timedelta(days=1)
-        self.assertEquals(_range.start.year, tomorrow.year)
-        self.assertEquals(_range.end.year, tomorrow.year)
-        self.assertEquals(_range.start.month, tomorrow.month)
-        self.assertEquals(_range.end.month, tomorrow.month)
-        self.assertEquals(_range.start.day, tomorrow.day)
-        self.assertEquals(_range.end.day, tomorrow.day)
-        self.assertEquals(_range.start.hour, 10)
-        self.assertEquals(_range.end.hour, 17)
+        self.assertEqual(_range.start.year, tomorrow.year)
+        self.assertEqual(_range.end.year, tomorrow.year)
+        self.assertEqual(_range.start.month, tomorrow.month)
+        self.assertEqual(_range.end.month, tomorrow.month)
+        self.assertEqual(_range.start.day, tomorrow.day)
+        self.assertEqual(_range.end.day, tomorrow.day)
+        self.assertEqual(_range.start.hour, 10)
+        self.assertEqual(_range.end.hour, 17)
 
     def test_dates(self):
         date = Date("August 25th, 2014 12:30 PM")
